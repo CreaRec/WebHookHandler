@@ -1,10 +1,26 @@
+const crypto = require('crypto');
+
 let encoder = new TextEncoder();
+
+async function verifySignature2(secret, header, payload) {
+	// Create an HMAC instance with the SHA-256 algorithm
+	const hmac = crypto.createHmac('sha256', secret);
+
+	// Update the HMAC with the data to sign
+	hmac.update(payload);
+
+	// Calculate the HMAC signature as a hexadecimal string
+	const signature = hmac.digest('hex');
+
+	console.log('HMAC Signature:', signature);
+	return header === `sha256=${signature}`;
+}
 
 async function verifySignature(secret, header, payload) {
 	let parts = header.split("=");
 	let sigHex = parts[1];
 
-	let algorithm = { name: "HMAC", hash: { name: 'SHA-256' } };
+	let algorithm = {name: "HMAC", hash: {name: 'SHA-256'}};
 
 	let keyBytes = encoder.encode(secret);
 	let extractable = false;
@@ -13,7 +29,7 @@ async function verifySignature(secret, header, payload) {
 		keyBytes,
 		algorithm,
 		extractable,
-		[ "sign", "verify" ],
+		["sign", "verify"],
 	);
 
 	let sigBytes = hexToBytes(sigHex);
@@ -42,4 +58,5 @@ function hexToBytes(hex) {
 
 module.exports = {
 	verifySignature,
+	verifySignature2
 };

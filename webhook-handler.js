@@ -1,7 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
-const {verifySignature} = require("./github-payload-verifier");
+const {verifySignature, verifySignature2} = require("./github-payload-verifier");
 
 const app = express();
 const port = process.env.WEBHOOK_HANDLER_PORT || 3000;
@@ -20,7 +20,7 @@ app.post('/webhook/expenses-bot', async (req, res) => {
 		return;
 	}
 	console.log(req.body);
-	let verificationResult = await verifySignature("secret", webhookSignature, req.body);
+	let verificationResult = await verifySignature2("secret", webhookSignature, req.body);
 	console.log(verificationResult);
 
 	// Parse the webhook payload
