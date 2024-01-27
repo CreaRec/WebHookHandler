@@ -1,6 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
+const {verifySignature} = require("./github-payload-verifier");
 
 const app = express();
 const port = process.env.WEBHOOK_HANDLER_PORT || 3000;
@@ -9,11 +10,15 @@ const port = process.env.WEBHOOK_HANDLER_PORT || 3000;
 app.use(bodyParser.json());
 
 // Define a POST route to handle webhook requests
-app.post('/webhook/expenses-bot', (req, res) => {
+app.post('/webhook/expenses-bot', async (req, res) => {
+	console.log('Received webhook request');
+	// Get GitHub header with signature
+	const webhookSignature = req.headers['X-Hub-Signature-256'];
+	let verificationResult = await verifySignature("testSecret", webhookSignature, req.body);
+	console.log(verificationResult);
+
 	// Parse the webhook payload
 	// const { repository, ref, action } = req.body;
-	console.log('Received webhook request');
-	console.log(req.body);
 
 	// Perform any validation or filtering based on the payload
 
