@@ -1,6 +1,6 @@
 let encoder = new TextEncoder();
 
-export async function verifySignature(secret, header, payload) {
+async function verifySignature(secret, header, payload) {
 	let parts = header.split("=");
 	let sigHex = parts[1];
 
