@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-async function verifySignature2(secret, header, payload) {
+async function verifySignature(secret, header, payload) {
 	// Create an HMAC instance with the SHA-256 algorithm
 	const hmac = crypto.createHmac('sha256', secret);
 	hmac.update(payload);
@@ -9,5 +9,5 @@ async function verifySignature2(secret, header, payload) {
 }
 
 module.exports = {
-	verifySignature2
+	verifySignature
 };

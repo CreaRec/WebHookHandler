@@ -1,7 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
-const {verifySignature2} = require("./github-payload-verifier");
+const {verifySignature} = require("./github-payload-verifier");
 
 const app = express();
 const port = process.env.WEBHOOK_HANDLER_PORT || 3000;
@@ -20,17 +20,16 @@ app.post('/webhook/expenses-bot', async (req, res) => {
 		return;
 	}
 	let payload = req.body;
-	console.log(payload);
-	let verificationResult = await verifySignature2("secret", webhookSignature, JSON.stringify(payload));
-	console.log(verificationResult);
-
-	// Parse the webhook payload
-	// const { repository, ref, action } = req.body;
-
-	// Perform any validation or filtering based on the payload
-
+	let verificationResult = await verifySignature("secret", webhookSignature, JSON.stringify(payload));
+	if (!verificationResult) {
+		console.log('Signature verification failed');
+		res.status(400).send('Signature verification failed');
+		return;
+	}
+	console.log('Signature verification succeeded');
+	console.log("Executing shell script")
 	// Execute the shell script
-	const shellScript = spawn('sh', ['/data/test.sh']);
+	const shellScript = spawn('sh', ['/data/expenses-bot-deploy.sh']);
 
 	shellScript.stdout.on('data', (data) => {
 		console.log(`stdout: ${data}`);
