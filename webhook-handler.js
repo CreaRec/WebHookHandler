@@ -35,6 +35,7 @@ app.post('/webhook/expenses-bot', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
+	console.log('Received health check request');
 	res.status(200).send('OK');
 });
 
