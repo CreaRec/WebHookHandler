@@ -39,3 +39,7 @@ function hexToBytes(hex) {
 
 	return bytes;
 }
+
+module.exports = {
+	verifySignature,
+};
