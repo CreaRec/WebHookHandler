@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 app.post('/webhook/expenses-bot', async (req, res) => {
 	console.log('Received webhook request');
 	// Get GitHub header with signature
-	const webhookSignature = req.headers['X-Hub-Signature-256'];
+	const webhookSignature = req.headers['x-hub-signature-256'];
+	console.log(webhookSignature);
 	let verificationResult = await verifySignature("testSecret", webhookSignature, req.body);
 	console.log(verificationResult);
 
