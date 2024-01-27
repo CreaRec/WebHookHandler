@@ -19,8 +19,9 @@ app.post('/webhook/expenses-bot', async (req, res) => {
 		res.status(400).send('No signature provided');
 		return;
 	}
-	console.log(req.body);
-	let verificationResult = await verifySignature2("secret", webhookSignature, req.body);
+	let payload = req.body;
+	console.log(payload);
+	let verificationResult = await verifySignature2("secret", webhookSignature, payload);
 	console.log(verificationResult);
 
 	// Parse the webhook payload
