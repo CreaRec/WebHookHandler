@@ -34,6 +34,10 @@ app.post('/webhook/expenses-bot', (req, res) => {
 	});
 });
 
+app.get('/health', (req, res) => {
+	res.status(200).send('OK');
+});
+
 // Start the server
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
