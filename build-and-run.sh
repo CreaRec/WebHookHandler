@@ -16,7 +16,7 @@ fi
 docker build -t $IMAGE_NAME .
 
 # Run the Docker container
-docker run -d -p 3000:3000 --name $APP_NAME --restart unless-stopped $IMAGE_NAME
+docker run -v /home/crearec/webhook-handler-app-shared-folder:/data -d -p 3000:3000 --name $APP_NAME --restart unless-stopped $IMAGE_NAME
 
 # Remove all unused images and data
 docker system prune -af

@@ -18,7 +18,7 @@ app.post('/webhook/expenses-bot', (req, res) => {
 	// Perform any validation or filtering based on the payload
 
 	// Execute the shell script
-	const shellScript = spawn('sh', ['/home/crearec/test.sh']);
+	const shellScript = spawn('sh', ['/data/test.sh']);
 
 	shellScript.stdout.on('data', (data) => {
 		console.log(`stdout: ${data}`);
